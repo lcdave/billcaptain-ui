@@ -1,0 +1,37 @@
+<div class="flex justify-between flex-col py-6 px-6 transition-all duration-300 h-full"
+     [class]="isExpanded() ? 'w-56' : 'w-20'">
+  <div>
+    <app-logo [short]="!isExpanded()"/>
+    <ul>
+      <li
+        class="flex gap-3 items-center mb-3 py-2 px-4 cursor-pointer hover:bg-white hover:rounded-2xl"
+        *ngFor="let navigationItem of navigationItems"
+        [routerLink]="navigationItem.route"
+        routerLinkActive #rla="routerLinkActive"
+        [ngClass]="rla.isActive ? 'bg-white rounded-2xl' : ''">
+        <div
+          class="w-8 h-8 rounded-2xl flex justify-center items-center hover:bg-orange-400"
+          [ngClass]="rla.isActive ? 'bg-orange-400' : 'bg-white text-orange-500'">
+          <app-icon
+            *ngIf="navigationItem.icon"
+            [name]="navigationItem.icon"
+            [size]="'15'"
+            class="cursor-pointer"
+          />
+        </div>
+        <span
+          *ngIf="isExpanded()"
+          [ngClass]="rla.isActive ? '' : 'text-gray-500'">
+        {{ navigationItem.label }}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="w-5 flex items-center">
+    <app-icon
+      class="cursor-pointer"
+      [name]="'angle-double-left'"
+      (click)="expandSidebar()"
+      [class.rotate-180]="!isExpanded()"
+    />
+  </div>
+</div>
