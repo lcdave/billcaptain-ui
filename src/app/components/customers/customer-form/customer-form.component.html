@@ -1,0 +1,56 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="customerForm">
+  <div class="flex items-center gap-4 mb-4">
+    <label class="font-semibold w-24" for="firstName">Vorname</label>
+    <input
+      [ngClass]="{'ng-invalid ng-dirty': submitted && customerForm.controls['firstName'].errors}"
+      autocomplete="off"
+      class="flex-auto"
+      formControlName="firstName"
+      id="firstName"
+      pInputText
+    />
+  </div>
+  <div *ngIf="submitted && customerForm.controls['firstName'].errors" class="text-red-500 text-sm ml-28 -mt-3 mb-2">
+    Vorname ist erforderlich
+  </div>
+
+  <div class="flex items-center gap-4 mb-4">
+    <label class="font-semibold w-24" for="lastName">Nachname</label>
+    <input
+      [ngClass]="{'ng-invalid ng-dirty': submitted && customerForm.controls['lastName'].errors}"
+      autocomplete="off"
+      class="flex-auto"
+      formControlName="lastName"
+      id="lastName"
+      pInputText
+    />
+  </div>
+  <div *ngIf="submitted && customerForm.controls['lastName'].errors" class="text-red-500 text-sm ml-28 -mt-3 mb-2">
+    Nachname ist erforderlich
+  </div>
+
+  <div class="flex items-center gap-4 mb-8">
+    <label class="font-semibold w-24" for="company">Unternehmen</label>
+    <input
+      autocomplete="off"
+      class="flex-auto"
+      formControlName="company"
+      id="company"
+      pInputText
+    />
+  </div>
+
+  <div class="flex justify-end gap-2">
+    <p-button
+      (click)="onCancel()"
+      label="Abbrechen"
+      severity="secondary"
+      type="button"
+    ></p-button>
+    <p-button
+      [disabled]="readOnly"
+      label="Speichern"
+      type="submit"
+    ></p-button>
+  </div>
+</form>
