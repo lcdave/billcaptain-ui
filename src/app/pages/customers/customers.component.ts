@@ -5,18 +5,41 @@ import {CardModule} from 'primeng/card';
 import {IconComponent} from '../../components/icon/icon.component';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {Customer} from '@shared/models';
 import {CustomerFormComponent} from '../../components/customers/customer-form/customer-form.component';
 
+import {ConfirmationService} from 'primeng/api';
+
+
 @Component({
   selector: 'app-customers',
-  imports: [TableModule, PaginatorModule, CardModule, IconComponent, ButtonModule, DialogModule, CustomerFormComponent],
+  imports: [
+    TableModule,
+    PaginatorModule,
+    CardModule,
+    IconComponent,
+    ButtonModule,
+    DialogModule,
+    CustomerFormComponent,
+    ConfirmDialogModule
+  ],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.css',
-  standalone: true
+  standalone: true,
+  providers: [ConfirmationService]
 })
 
 export class CustomersComponent {
+  editCustomerDialogVisible: boolean = false;
+  customerToEdit: Customer = {
+    id: 0,
+    firstName: "",
+    lastName: "",
+    invoiceValue: 0,
+    company: ""
+  }
+
   customers: Customer[] = [
     {id: 1, firstName: 'Michael', lastName: 'Schmidt', company: 'TechCorp GmbH', invoiceValue: 157850},
     {id: 2, firstName: 'Laura', lastName: 'Weber', company: 'Digital Solutions AG', invoiceValue: 89320},
@@ -43,16 +66,41 @@ export class CustomersComponent {
   rows: number = 10;
   createCustomerDialogVisible: boolean = false;
 
+  constructor(private confirmationService: ConfirmationService) {
+  }
+
+  confirmDeleteCustomer(customer: Customer) {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this item?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-secondary p-button-outlined',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      accept: () => {
+        // User clicked "Yes" - perform the action
+        console.log('Confirmed', customer);
+      },
+      reject: () => {
+        // User clicked "No" or closed dialog
+        console.log('Rejected');
+      }
+    });
+  }
+
   showCreateCustomerDialog() {
     this.createCustomerDialogVisible = true;
   }
 
-  editCustomer(customer: Customer) {
-    console.log(customer);
+  showEditCustomerDialog(customer: Customer) {
+    this.customerToEdit = customer;
+    this.editCustomerDialogVisible = true;
   }
 
-  deleteCustomer(customer: Customer) {
-    console.log(customer);
+  editCustomer(customer: Customer) {
+    console.log("editCustomer", customer);
+    this.editCustomerDialogVisible = false;
   }
 
   onCreateCustomer(customer: Customer) {

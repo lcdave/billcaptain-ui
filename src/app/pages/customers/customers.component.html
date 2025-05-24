@@ -8,6 +8,18 @@
     (formSubmit)="onCreateCustomer($event)"
   ></app-customer-form>
 </p-dialog>
+
+<p-dialog [(visible)]="editCustomerDialogVisible" [modal]="true" [style]="{ width: '25rem' }"
+          header="Kunde bearbeiten">
+  <app-customer-form
+    (formCancel)="editCustomerDialogVisible = false"
+    (formSubmit)="editCustomer($event)"
+    [customer]="customerToEdit"
+  />
+</p-dialog>
+
+<p-confirmdialog/>
+
 <p-card>
   <p-table [value]="customers"
            [tableStyle]="{ 'min-width': '50rem' }"
@@ -34,8 +46,8 @@
         <td>{{ customer.invoiceValue }} CHF</td>
         <td>
           <div class="flex gap-4">
-            <app-icon name="pencil" (click)="editCustomer(customer)"/>
-            <app-icon class="text-red-600" name="trash" (click)="deleteCustomer(customer)"/>
+            <app-icon (click)="showEditCustomerDialog(customer)" class="hover:cursor-pointer" name="pencil"/>
+            <app-icon (click)="confirmDeleteCustomer(customer)" class="text-red-600 hover:cursor-pointer" name="trash"/>
           </div>
         </td>
       </tr>
